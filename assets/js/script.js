@@ -130,6 +130,10 @@ const onMoving = (gameInstance, speedX) => {
 }
 
 const startGame = (gameInstance) => {
+  const isMobile = gameInstance.width < 1024
+  if (isMobile && document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen();
+  }
   document.querySelector('#game-start').classList.remove('active');
   gameInstance.restart()
 }
