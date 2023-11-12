@@ -78,30 +78,6 @@ body main {
   bottom: -30px;
 }
 
-#fullscreen {
-  position: fixed;
-  bottom: 50px;
-  right: 50px;
-  z-index: 99;
-}
-
-#btn-fullscreen {
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  background-color: rgba(0,0,0,.8);
-  color: #fff;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 20px;
-  outline: none;
-}
-
 .dialog {
   width: 100vw;
   height: 100vh;
