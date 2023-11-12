@@ -1,7 +1,8 @@
 class Helicopter {
   constructor(x, y, canvasWidth, canvasHeight) {
-    this.width = 126
-    this.height = 74
+    const isMobile = canvasWidth < 1024
+    this.width = isMobile? 100: 126
+    this.height = isMobile? 58: 74
     this.x = x
     this.y = y
     this.collided = false
@@ -29,6 +30,9 @@ class Helicopter {
   updateCanvas(canvasWidth, canvasHeight) {
     this.canvasWidth = canvasWidth
     this.canvasHeight = canvasHeight
+    const isMobile = canvasWidth < 1024
+    this.width = isMobile? 100: 126
+    this.height = isMobile? 50: 74
   }
 
   isCollided() {

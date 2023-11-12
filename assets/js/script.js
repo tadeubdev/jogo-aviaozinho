@@ -163,8 +163,9 @@ const onKeyDown = (gameInstance, e) => {
   }
 }
 
-const onWindowResize = (width, height) => {
+const onWindowResize = (gameInstance, width, height) => {
   gameInstance.redraw(width, height)
+  gameInstance.helicopter.updateCanvas(width, height)
 }
 
 const handleOnMobileControlsClick = (gameInstance, e) => {
@@ -215,7 +216,7 @@ game.onReady = (gameInstance) => {
   document.querySelector('#btn-start').addEventListener('click', () => startGame(gameInstance));
   document.querySelector('#btn-restart').addEventListener('click', () => restartGame(gameInstance));
   window.addEventListener('keydown', (e) => onKeyDown(gameInstance, e));
-  window.addEventListener('resize', () => onWindowResize(window.innerWidth, window.innerHeight));
+  window.addEventListener('resize', () => onWindowResize(gameInstance, window.innerWidth, window.innerHeight));
   // add event to trigger when the user touch the #mobile-controls buttons
   const mobileControls = document.querySelector('#mobile-controls');
   mobileControls.addEventListener('touchstart', (e) => handleTouch(gameInstance, e));
@@ -229,7 +230,7 @@ game.onDestruct = (gameInstance) => {
   document.querySelector('#btn-start').removeEventListener('click', () => startGame(gameInstance));
   document.querySelector('#btn-restart').removeEventListener('click', () => restartGame(gameInstance));
   window.removeEventListener('keydown', (e) => onKeyDown(gameInstance, e));
-  window.removeEventListener('resize', () => onWindowResize(window.innerWidth, window.innerHeight));
+  window.removeEventListener('resize', () => onWindowResize(gameInstance, window.innerWidth, window.innerHeight));
   // remove event to trigger when the user touch the #mobile-controls buttons
   const mobileControls = document.querySelector('#mobile-controls');
   mobileControls.removeEventListener('touchstart', (e) => handleTouch(gameInstance, e));
