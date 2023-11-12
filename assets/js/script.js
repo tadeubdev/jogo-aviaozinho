@@ -114,15 +114,17 @@ class Game {
 
 }
 
-const onGameOver = () => {
+const onGameOver = (gameInstance) => {
   console.log('onGameOver')
   document.querySelector('#game-over').classList.add('active');
   document.querySelector('#mobile-controls').classList.remove('active');
+  gameInstance.helicopter.stopAudioFlying()
 }
 
-const onGameStarting = () => {
+const onGameStarting = (gameInstance) => {
   console.log('onGameStarting')
   document.querySelector('#mobile-controls').classList.add('active');
+  gameInstance.helicopter.startAudioFlying()
 }
 
 const onMoving = (gameInstance, speedX) => {
@@ -232,8 +234,8 @@ const floor = new Floor()
 const game = new Game('game-center', window.innerWidth, window.innerHeight, clouds, helicopter, floor)
 
 game.onReady = (gameInstance) => {
-  gameInstance.onGameOver = onGameOver;
-  gameInstance.onStarting = onGameStarting;
+  gameInstance.onGameOver = () => onGameOver(gameInstance);
+  gameInstance.onStarting = () => onGameStarting(gameInstance);
   helicopter.onMoving = (speedX) => onMoving(gameInstance, speedX);
   document.querySelector('#btn-start').addEventListener('click', () => startGame(gameInstance));
   document.querySelector('#btn-restart').addEventListener('click', () => restartGame(gameInstance));

@@ -16,6 +16,19 @@ class Helicopter {
     this.image.src = './assets/img/helicopter.png';
     this.onMoving = () => {}
     this.onCollission = () => {}
+    this.audioFailed = new Audio('./assets/audio/level-failed.mp3')
+    this.audioFailed.volume = 0.5
+    this.audioFlying = new Audio('./assets/audio/helicopter.mp3')
+    this.audioFlying.loop = true
+  }
+
+  startAudioFlying() {
+    this.audioFlying.currentTime = 0
+    this.audioFlying.play()
+  }
+
+  stopAudioFlying() {
+    this.audioFlying.pause()
   }
 
   clear() {
@@ -25,6 +38,11 @@ class Helicopter {
     this.angle = 0; // Inicializa o ângulo de rotação
     this.x = 10
     this.y = Math.ceil(this.canvasHeight / 2)
+    this.audioFailed.pause()
+    this.audioFailed = new Audio('./assets/audio/level-failed.mp3')
+    this.audioFailed.volume = 0.5
+    this.audioFlying.pause()
+    this.audioFlying = new Audio('./assets/audio/helicopter.mp3')
   }
 
   updateCanvas(canvasWidth, canvasHeight) {
@@ -33,6 +51,16 @@ class Helicopter {
     const isMobile = canvasWidth < 1024
     this.width = isMobile? 100: 126
     this.height = isMobile? 50: 74
+  }
+
+  handleCollided() {
+    if (this.collided) {
+      return;
+    }
+    this.collided = true;
+    this.onCollission();
+    this.audioFailed.currentTime = 0
+    this.audioFailed.play()
   }
 
   isCollided() {
@@ -121,8 +149,7 @@ class Helicopter {
   checkCollision() {
     if (this.x + this.width > this.canvasWidth || this.x < 0 ||
         this.y + this.height > this.canvasHeight || this.y < 0) {
-      this.collided = true;
-      this.onCollission()
+      this.handleCollided()
     }
   }
 
