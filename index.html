@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Plane game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body>
+    <main>
+      <div class="dialog active" id="game-start">
+        <div class="dialog-container">
+          <h1>Air Plane</h1>
+          <p>Clique no botão para iniciar.</p>
+          <button id="btn-start" class="dialog-btn">Iniciar</button>
+        </div>
+      </div>
+      <div class="dialog" id="game-over">
+        <div class="dialog-container">
+          <h1>Air Plane</h1>
+          <p>GAME OVER</p>
+          <button id="btn-restart" class="dialog-btn">Reiniciar</button>
+        </div>
+      </div>
+      <div id="mobile-controls">
+        <button id="btn-left" class="mobile-control-btn"><i class="fas fa-chevron-left"></i></button>
+        <button id="btn-up" class="mobile-control-btn"><i class="fas fa-chevron-up"></i></button>
+        <button id="btn-right" class="mobile-control-btn"><i class="fas fa-chevron-right"></i></button>
+        <button id="btn-down" class="mobile-control-btn"><i class="fas fa-chevron-down"></i></button>
+      </div>
+      <canvas id="game-center"></canvas>
+    </main>
+    <script src="assets/js/clouds.js"></script>
+    <script src="assets/js/floor.js"></script>
+    <script src="assets/js/helicopter.js"></script>
+    <script src="assets/js/score.js"></script>
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>

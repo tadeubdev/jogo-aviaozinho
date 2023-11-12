@@ -1,0 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* disable user select */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+}
+
+body main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+#game-center {
+  width: 100vw;
+  height: 100vh;
+  background-color: #a1f4ff86;
+}
+
+#mobile-controls {
+  background-color: rgba(0,0,0,1);
+  width: 30px;
+  height: 30px;
+  position: fixed;
+  bottom: 50px;
+  left: 50px;
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  #mobile-controls.active {
+    display: flex;
+  }
+}
+
+#mobile-controls .mobile-control-btn {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(0,0,0,.8);
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+#mobile-controls #btn-left {
+  left: -30px;
+  bottom: 0px;
+}
+
+#mobile-controls #btn-up {
+  left: 0px;
+  bottom: 30px;
+}
+
+#mobile-controls #btn-right {
+  left: 30px;
+  bottom: 0px;
+}
+
+#mobile-controls #btn-down {
+  left: 0px;
+  bottom: -30px;
+}
+
+.dialog {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,.5);
+  color: #fff;
+  position: fixed;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-container {
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+}
+
+.dialog.active {
+  display: flex;
+}
+
+.dialog h1 {
+  font-size: 40px;
+  margin-bottom: -18px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.dialog p {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.dialog-btn {
+  width: 100px;
+  height: 40px;
+  background-color: #fff;
+  color: rgba(0,0,0,.5);
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
