@@ -207,6 +207,24 @@ const handleMove = (gameInstance, e) => {
   }
 }
 
+const onFullscreenChange = () => {
+  if (document.fullscreenElement) {
+    document.querySelector('#btn-fullscreen i').classList.remove('fa-expand');
+    document.querySelector('#btn-fullscreen i').classList.add('fa-compress');
+  } else {
+    document.querySelector('#btn-fullscreen i').classList.remove('fa-compress');
+    document.querySelector('#btn-fullscreen i').classList.add('fa-expand');
+  }
+}
+
+const handleOnToggleFullscreen = () => {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    document.documentElement.requestFullscreen();
+  }
+}
+
 const clouds = Clouds.generateClouds(window.innerWidth, window.innerHeight, 5)
 const helicopter = new Helicopter(10, Math.ceil(window.innerHeight / 2), window.innerWidth, window.innerHeight)
 const floor = new Floor()
@@ -225,6 +243,9 @@ game.onReady = (gameInstance) => {
   const mobileControls = document.querySelector('#mobile-controls');
   mobileControls.addEventListener('touchstart', (e) => handleTouch(gameInstance, e));
   mobileControls.addEventListener('touchmove', (e) => handleMove(gameInstance, e));
+  document.querySelector('#btn-fullscreen').addEventListener('click', handleOnToggleFullscreen);
+  document.addEventListener("fullscreenchange", onFullscreenChange);
+  onFullscreenChange();
 }
 
 game.onDestruct = (gameInstance) => {
@@ -239,6 +260,9 @@ game.onDestruct = (gameInstance) => {
   const mobileControls = document.querySelector('#mobile-controls');
   mobileControls.removeEventListener('touchstart', (e) => handleTouch(gameInstance, e));
   mobileControls.removeEventListener('touchmove', (e) => handleMove(gameInstance, e));
+  document.querySelector('#btn-fullscreen').removeEventListener('click', handleOnToggleFullscreen);
+  document.removeEventListener("fullscreenchange", onFullscreenChange);
+  onFullscreenChange();
 }
 
 game.mount()
