@@ -118,6 +118,11 @@ body main {
   background-color: rgba(0,0,0,.94);
 }
 
+#game-loading {
+  z-index: 999999;
+  background-color: rgba(0,0,0,.94);
+}
+
 @media (max-width: 1023px) and (orientation: portrait) {
   .dialog-master {
     display: flex !important;

@@ -13,6 +13,12 @@
   </head>
   <body>
     <main>
+      <div class="dialog dialog-master active" id="game-loading">
+        <div class="dialog-container">
+          <h1>Air Plane</h1>
+          <p>Aguarde! Carregando...</p>
+        </div>
+      </div>
       <div class="dialog dialog-master" id="mobile-horizontal">
         <div class="dialog-container">
           <h1>Air Plane</h1>
@@ -49,5 +55,37 @@
     <script src="assets/js/helicopter.js"></script>
     <script src="assets/js/score.js"></script>
     <script src="assets/js/script.js"></script>
+    <script>
+      window.addEventListener('load', () => {
+        const imagesToLoad = ['assets/img/helicopter.png', 'assets/img/cloud.png', 'assets/img/grass.png'];
+        const audiosToLoad = ['assets/audio/helicopter.mp3', 'assets/audio/level-failed.mp3'];
+
+        const loadImages = (images, callback) => {
+          let imagesToLoad = images.length;
+          const onload = () => --imagesToLoad === 0 && callback();
+          images.forEach(image => {
+            const img = new Image();
+            img.src = image;
+            img.addEventListener('load', onload);
+          });
+        };
+
+        const loadAudios = (audios, callback) => {
+          let audiosToLoad = audios.length;
+          const onload = () => --audiosToLoad === 0 && callback();
+          audios.forEach(audio => {
+            const audioEl = new Audio();
+            audioEl.src = audio;
+            audioEl.addEventListener('canplaythrough', onload);
+          });
+        };
+
+        loadImages(imagesToLoad, () => {
+          loadAudios(audiosToLoad, () => {
+            document.getElementById('game-loading').classList.remove('active');
+          });
+        });
+      });
+    </script>
   </body>
 </html>
