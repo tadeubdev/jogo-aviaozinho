@@ -89,6 +89,21 @@ body main {
   justify-content: center;
 }
 
+.dialog-master {
+  z-index: 999;
+  background-color: rgba(0,0,0,.94);
+}
+
+@media (max-width: 1023px) and (orientation: portrait) {
+  .dialog-master {
+    display: flex !important;
+  }
+}
+
+.dialog-master h1 {
+  margin-bottom: -10px !important;
+}
+
 .dialog-container {
   width: 400px;
   max-width: 90%;
