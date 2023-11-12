@@ -1,7 +1,7 @@
 class Helicopter {
   constructor(x, y, canvasWidth, canvasHeight) {
-    this.width = 65
-    this.height = 35
+    this.width = 126
+    this.height = 74
     this.x = x
     this.y = y
     this.collided = false
