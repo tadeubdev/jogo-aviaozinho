@@ -8,7 +8,7 @@ class Clouds {
     this.width = 150;
     this.height = 60;
     this.image = new Image();
-    this.image.src = '/assets/img/cloud.png';
+    this.image.src = './assets/img/cloud.png';
   }
 
   clear() {

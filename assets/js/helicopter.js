@@ -12,7 +12,7 @@ class Helicopter {
     this.canvasWidth = canvasWidth
     this.canvasHeight = canvasHeight
     this.image = new Image();
-    this.image.src = '/assets/img/helicopter.png';
+    this.image.src = './assets/img/helicopter.png';
     this.onMoving = () => {}
     this.onCollission = () => {}
   }

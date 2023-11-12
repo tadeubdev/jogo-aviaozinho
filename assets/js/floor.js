@@ -5,7 +5,7 @@ class Floor {
     this.speed = 1; // velocidade de movimento do chão
     this.characterSpeed = 0; // velocidade de movimento do personagem
     this.image = new Image();
-    this.image.src = '/assets/img/grass.png';
+    this.image.src = './assets/img/grass.png';
   }
 
   clear() {
