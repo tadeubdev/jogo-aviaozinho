@@ -18,9 +18,10 @@ class Helicopter {
     this.onCollission = () => {}
     this.onShoot = () => {}
     this.audioFailed = new Audio('./assets/audio/level-failed.mp3')
-    this.audioFailed.volume = 0.5
+    this.audioFailed.volume = 0.4
     this.audioFlying = new Audio('./assets/audio/helicopter.mp3')
     this.audioFlying.loop = true
+    this.audioFlying.volume = 0.3
     this.audioShooting = new Audio('./assets/audio/laser.wav')
     this.audioShooting.loop = false
     this.audioShooting.volume = 0.1
@@ -38,6 +39,14 @@ class Helicopter {
   startAudioFlying() {
     this.audioFlying.currentTime = 0
     this.audioFlying.play()
+    // add um evento para quando o currentTime estiver a poucos segundos do fim, dar um play novamente
+    this.audioFlying.addEventListener('timeupdate', () => {
+      const buffer = 0.99
+      if (this.audioFlying.currentTime > this.audioFlying.duration - buffer) {
+        this.audioFlying.currentTime = 0.1
+        this.audioFlying.play()
+      }
+    })
   }
 
   stopAudioFlying() {
