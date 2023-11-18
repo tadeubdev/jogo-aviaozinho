@@ -1,8 +1,8 @@
 class Helicopter {
   constructor(x, y, canvasWidth, canvasHeight) {
-    const isMobile = canvasWidth < 1024
-    this.width = isMobile? 100: 126
-    this.height = isMobile? 58: 74
+    this.width = 96
+    this.height = 32
+    this.scale = 1.5
     this.x = x
     this.y = y
     this.collided = false
@@ -12,8 +12,16 @@ class Helicopter {
     this.angle = 0; // Inicializa o ângulo de rotação
     this.canvasWidth = canvasWidth
     this.canvasHeight = canvasHeight
-    this.image = new Image();
-    this.image.src = './assets/img/helicopter.png';
+    this.sprites = [];
+    for (let sprintIndex = 1; sprintIndex <= 8; sprintIndex++) {
+      const sprite = new Image();
+      sprite.src = `./assets/img/helicopter_${sprintIndex}.png`;
+      this.sprites.push(sprite);
+    }
+    this.spriteIndex = 0;
+    this.spriteTime = null;
+    this.spriteSecondsToUpdate = 0.01;
+    this.image = this.sprites[this.spriteIndex];
     this.onMoving = () => {}
     this.onCollission = () => {}
     this.onShoot = () => {}
@@ -67,14 +75,6 @@ class Helicopter {
     this.audioFlying = new Audio('./assets/audio/helicopter.mp3')
   }
 
-  updateCanvas(canvasWidth, canvasHeight) {
-    this.canvasWidth = canvasWidth
-    this.canvasHeight = canvasHeight
-    const isMobile = canvasWidth < 1024
-    this.width = isMobile? 100: 126
-    this.height = isMobile? 50: 74
-  }
-
   handleCollided() {
     if (this.collided) {
       return;
@@ -90,6 +90,19 @@ class Helicopter {
   }
 
   draw(ctx) {
+    // Atualizar o sprite do helicóptero
+    if (this.spriteTime) {
+      const now = new Date();
+      const diff = (now - this.spriteTime) / 1000;
+      if (diff > this.spriteSecondsToUpdate) {
+        this.spriteTime = now;
+        this.spriteIndex = (this.spriteIndex + 1) % this.sprites.length;
+        this.image = this.sprites[this.spriteIndex];
+      }
+    } else {
+      this.spriteTime = new Date();
+    }
+
     // Atualizar velocidade com base na aceleração
     this.velocity.x += this.acceleration.x;
     this.velocity.y += this.acceleration.y;
@@ -114,14 +127,17 @@ class Helicopter {
       // Salvar o estado atual do contexto
       ctx.save();
 
+      const width = this.width * this.scale
+      const height = this.height * this.scale
+
       // Mover o contexto para o centro do helicóptero
-      ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
+      ctx.translate(this.x + width / 2, this.y + height / 2);
 
       // Rotacionar o contexto
       ctx.rotate(this.angle);
 
       // Desenhar helicóptero com rotação
-      ctx.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height);
+      ctx.drawImage(this.image, -width / 2, -height / 2, width, height);
 
       // Restaurar o contexto para o estado original
       ctx.restore();

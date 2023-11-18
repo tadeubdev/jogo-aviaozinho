@@ -185,7 +185,6 @@ const onKeyDown = (gameInstance, e) => {
 
 const onWindowResize = (gameInstance, width, height) => {
   gameInstance.redraw(width, height)
-  gameInstance.helicopter.updateCanvas(width, height)
 }
 
 const handleOnMobileControlsClick = (gameInstance, e) => {
@@ -231,6 +230,12 @@ const helicopter = new Helicopter(10, Math.ceil(gameHeight / 2), gameWidth, game
 const floor = new Floor()
 
 const game = new Game('game-center', gameWidth, gameHeight, clouds, helicopter, floor)
+
+setTimeout(() => {
+  document.querySelector('#game-start').classList.remove('active');
+  document.querySelector('#game-over').classList.remove('active');
+  restartGame(game)
+}, 200);
 
 game.onReady = (gameInstance) => {
   gameInstance.onGameOver = () => onGameOver(gameInstance);

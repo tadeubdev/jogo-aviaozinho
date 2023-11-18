@@ -100,9 +100,9 @@ body main {
 }
 
 @media (max-width: 1023px) and (orientation: portrait) {
-  .dialog-master {
+  /* .dialog-master {
     display: flex !important;
-  }
+  } */
 }
 
 .dialog-master h1 {
