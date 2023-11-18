@@ -128,6 +128,13 @@ class Game {
     this.helicopter.incrementSpeed(direction)
   }
 
+  stopMovingCharacterOn(direction) {
+    if (!this.playing) {
+      return;
+    }
+    this.helicopter.decrementSpeed(direction)
+  }
+
   dispatchShoot(x, y) {
     const shoot = new Shoot(x, y, this.width)
     shoot.onFinish = () => {
@@ -165,6 +172,23 @@ const startGame = (gameInstance) => {
 const restartGame = (gameInstance) => {
   document.querySelector('#game-over').classList.remove('active');
   gameInstance.restart()
+}
+
+const onKeyUp = (gameInstance, e) => {
+  switch (e.key) {
+    case 'ArrowUp':
+      gameInstance.stopMovingCharacterOn('up')
+      break;
+    case 'ArrowDown':
+      gameInstance.stopMovingCharacterOn('down')
+      break;
+    case 'ArrowLeft':
+      gameInstance.stopMovingCharacterOn('left')
+      break;
+    case 'ArrowRight':
+      gameInstance.stopMovingCharacterOn('right')
+      break;
+  }
 }
 
 const onKeyDown = (gameInstance, e) => {
@@ -255,6 +279,7 @@ game.onReady = (gameInstance) => {
   gameInstance.helicopter.onMoving = (speedX) => onMoving(gameInstance, speedX);
   document.querySelector('#btn-start').addEventListener('click', () => startGame(gameInstance));
   document.querySelector('#btn-restart').addEventListener('click', () => restartGame(gameInstance));
+  window.addEventListener('keyup', (e) => onKeyUp(gameInstance, e));
   window.addEventListener('keydown', (e) => onKeyDown(gameInstance, e));
   window.addEventListener('resize', () => onWindowResize(gameInstance, gameWidth, gameHeight));
   // add event to trigger when the user touch the #mobile-controls buttons
@@ -269,6 +294,7 @@ game.onDestruct = (gameInstance) => {
   gameInstance.helicopter.onMoving = () => {};
   document.querySelector('#btn-start').removeEventListener('click', () => startGame(gameInstance));
   document.querySelector('#btn-restart').removeEventListener('click', () => restartGame(gameInstance));
+  window.removeEventListener('keyup', (e) => onKeyUp(gameInstance, e));
   window.removeEventListener('keydown', (e) => onKeyDown(gameInstance, e));
   window.removeEventListener('resize', () => onWindowResize(gameInstance, gameWidth, gameHeight));
   // remove event to trigger when the user touch the #mobile-controls buttons

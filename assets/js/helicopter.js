@@ -147,7 +147,7 @@ class Helicopter {
     this.checkCollision();
 
     // Reduzir gradualmente a aceleração
-    this.reduceAcceleration();
+    // this.reduceAcceleration();
 
     // Reduzir gradualmente a velocidade
     this.reduceVelocity();
@@ -223,7 +223,6 @@ class Helicopter {
     } else {
       this.velocity.x = 0;
     }
-
     if (Math.abs(this.velocity.y) > 0.01) {
       this.velocity.y *= 0.95; // Reduzir gradualmente
     } else {
@@ -257,6 +256,27 @@ class Helicopter {
       // Se já estiver se movendo para cima, inverter mais rapidamente
       this.acceleration.y = this.velocity.y < 0 ? 
           accelerationChange : Math.min(this.acceleration.y + accelerationChange, this.maxAcceleration);
+    }
+  }
+
+  decrementSpeed(direction) {
+    console.log('decrementSpeed', direction)
+    if (this.collided) {
+      this.acceleration.x = 0;
+      this.acceleration.y = 0;
+      return;
+    }
+    if (direction === 'up'  && this.velocity.y < 0) {
+      this.acceleration.y = 0;
+    }
+    if (direction === 'down' && this.velocity.y > 0) {
+      this.acceleration.y = 0;
+    }
+    if (direction === 'left' && this.velocity.x < 0) {
+      this.acceleration.x = 0;
+    }
+    if (direction === 'right' && this.velocity.x > 0) {
+      this.acceleration.x = 0;
     }
   }
 
