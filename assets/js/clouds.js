@@ -7,6 +7,7 @@ class Clouds {
     this.blur = Math.random() >= 0.5; // se a nuvem deve ter blur ou não
     this.width = 150;
     this.height = 60;
+    this.characterSpeed = 0;
     this.image = new Image();
     this.image.src = './assets/img/cloud.png';
   }
@@ -19,6 +20,7 @@ class Clouds {
     this.blur = Math.random() >= 0.5;
     this.width = 150;
     this.height = 60;
+    this.characterSpeed = 0;
   }
 
   draw(ctx) {
@@ -34,7 +36,7 @@ class Clouds {
     }
 
     // Atualizar a posição X
-    this.x -= this.speed;
+    this.x -= this.speed + (this.characterSpeed > 0? this.characterSpeed: 0);
 
     // Resetar a posição X para criar um loop contínuo
     if (this.x <= -this.image.width) {
@@ -49,6 +51,20 @@ class Clouds {
       ctx.restore();
     } else {
       ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+    }
+  }
+
+  updateCharacterSpeed(speedX) {
+    if (this.speed === 0.3 && speedX !== 0) {
+      speedX = speedX / 2
+    }
+    if (this.speed === 0.2 && speedX !== 0) {
+      speedX = speedX / 3
+    }
+    if (Math.abs(speedX) > 0.01) {
+      this.characterSpeed = speedX;
+    } else {
+      this.characterSpeed = 0;
     }
   }
 
