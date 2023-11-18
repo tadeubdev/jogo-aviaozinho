@@ -1,5 +1,5 @@
 class Game {
-  constructor(canvasId, width, height, clouds, helicopter, floor) {
+  constructor(canvasId, width, height, clouds, helicopter, floor, profile) {
     this.uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     this.canvas = document.getElementById(canvasId)
     this.width = width
@@ -7,6 +7,7 @@ class Game {
     this.ctx = this.canvas.getContext('2d')
     this.clouds = clouds;
     this.helicopter = helicopter;
+    this.profile = profile;
     this.floor = floor;
     this.playing = false;
     this.gameOver = false;
@@ -18,6 +19,14 @@ class Game {
       if (!this.playing) {
         return;
       }
+      if (this.profile.isAlive()) {
+        this.profile.decrement()
+        this.score.decrement(100)
+        this.helicopter.resetPosition()
+        return;
+      }
+      this.profile.decrement()
+      this.helicopter.stopAudioFlying()
       this.playing = false
       this.score.save()
       this.onGameOver()
@@ -44,6 +53,7 @@ class Game {
     this.floor.draw(this.ctx)
     this.helicopter.draw(this.ctx)
     this.score.draw(this.ctx)
+    this.profile.draw(this.ctx)
     if (this.playing) {
       this.score.increment()
       this.shoots.forEach(s => s.draw(this.ctx))
@@ -72,7 +82,8 @@ class Game {
     const helicopter = new Helicopter(10, Math.ceil(this.height / 2), this.width, this.height)
     const floor = new Floor()
     const clouds = Clouds.generateClouds(this.width, this.height, 5)
-    const newGame = new Game('game-center', this.width, this.height, clouds, helicopter, floor)
+    const profile = new Profile()
+    const newGame = new Game('game-center', this.width, this.height, clouds, helicopter, floor, profile)
     newGame.playing = true
     newGame.onGameOver = this.onGameOver
     newGame.onStarting = this.onStarting
@@ -228,8 +239,9 @@ const gameHeight = window.innerHeight
 const clouds = Clouds.generateClouds(gameWidth, gameHeight, 5)
 const helicopter = new Helicopter(10, Math.ceil(gameHeight / 2), gameWidth, gameHeight)
 const floor = new Floor()
+const profile = new Profile()
 
-const game = new Game('game-center', gameWidth, gameHeight, clouds, helicopter, floor)
+const game = new Game('game-center', gameWidth, gameHeight, clouds, helicopter, floor, profile)
 
 setTimeout(() => {
   document.querySelector('#game-start').classList.remove('active');

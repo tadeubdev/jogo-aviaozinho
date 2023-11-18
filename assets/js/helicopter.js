@@ -167,6 +167,14 @@ class Helicopter {
     this.angle = this.velocity.x * rotationFactor;
   }
 
+  resetPosition() {
+    this.x = 10
+    this.y = Math.ceil(this.canvasHeight / 2)
+    this.collided = false
+    this.velocity = { x: 0, y: 0 }
+    this.acceleration = { x: 0, y: 0 }
+  }
+
   moveToFloorWhenCollision() {
     if (!this.collided) {
       return;

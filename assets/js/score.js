@@ -15,6 +15,10 @@ class Score {
     this.lastScoreUpdate = new Date().getTime()
   }
 
+  decrement(value) {
+    this.score = Math.max(this.score - value, 0)
+  }
+
   save() {
     let highScore = parseInt(localStorage.getItem('highScore') || 0)
     if (this.score > highScore) {
