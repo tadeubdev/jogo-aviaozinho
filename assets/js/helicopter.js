@@ -16,10 +16,23 @@ class Helicopter {
     this.image.src = './assets/img/helicopter.png';
     this.onMoving = () => {}
     this.onCollission = () => {}
+    this.onShoot = () => {}
     this.audioFailed = new Audio('./assets/audio/level-failed.mp3')
     this.audioFailed.volume = 0.5
     this.audioFlying = new Audio('./assets/audio/helicopter.mp3')
     this.audioFlying.loop = true
+    this.audioShooting = new Audio('./assets/audio/laser.wav')
+    this.audioShooting.loop = false
+    this.audioShooting.volume = 0.1
+  }
+
+  shoot() {
+    if (this.collided) {
+      return;
+    }
+    this.onShoot(this.x + 30, this.y + (this.height / 2) + 20);
+    this.audioShooting.currentTime = 0
+    this.audioShooting.play()
   }
 
   startAudioFlying() {

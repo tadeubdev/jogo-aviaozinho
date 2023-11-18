@@ -1,5 +1,5 @@
 class Game {
-  constructor(canvasId, width, height, clouds, helicopter, floor) {
+  constructor(canvasId, width, height, clouds, helicopter, floor, mountain) {
     this.uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     this.canvas = document.getElementById(canvasId)
     this.width = width
@@ -8,9 +8,11 @@ class Game {
     this.clouds = clouds;
     this.helicopter = helicopter;
     this.floor = floor;
+    this.mountain = mountain;
     this.playing = false;
     this.gameOver = false;
     this.score = new Score(0)
+    this.shoots = []
     this.onGameOver = () => {}
     this.onStarting = () => {}
     this.helicopter.onCollission = () => {
@@ -20,6 +22,12 @@ class Game {
       this.playing = false
       this.score.save()
       this.onGameOver()
+    }
+    this.helicopter.onShoot = (x, y) => {
+      if (!this.playing) {
+        return;
+      }
+      this.dispatchShoot(x, y);
     }
   }
 
@@ -39,6 +47,7 @@ class Game {
     this.score.draw(this.ctx)
     if (this.playing) {
       this.score.increment()
+      this.shoots.forEach(s => s.draw(this.ctx))
     }
     requestAnimationFrame(() => this.draw())
   }
@@ -61,13 +70,11 @@ class Game {
     // delete actual game
     this.clear()
     this.playing = true
-    const helicopter = new Helicopter(10, Math.ceil(window.innerHeight / 2), window.innerWidth, window.innerHeight)
+    const helicopter = new Helicopter(10, Math.ceil(this.height / 2), this.width, this.height)
     const floor = new Floor()
-    helicopter.onMoving = (speedX) => {
-      floor.updateCharacterSpeed(speedX)
-    }
-    const clouds = Clouds.generateClouds(window.innerWidth, window.innerHeight, 5)
-    const newGame = new Game('game-center', this.width, this.height, clouds, helicopter, floor)
+    const clouds = Clouds.generateClouds(this.width, this.height, 5)
+    const mountain = new Mountain(this.width, this.height)
+    const newGame = new Game('game-center', this.width, this.height, clouds, helicopter, floor, mountain)
     newGame.playing = true
     newGame.onGameOver = this.onGameOver
     newGame.onStarting = this.onStarting
@@ -112,6 +119,15 @@ class Game {
     this.helicopter.incrementSpeed(direction)
   }
 
+  dispatchShoot(x, y) {
+    const shoot = new Shoot(x, y, this.width)
+    shoot.onFinish = () => {
+      this.shoots = this.shoots.filter(s => s.uuid !== shoot.uuid)
+    }
+    this.shoots.push(shoot);
+    shoot.draw(this.ctx)
+  }
+
 }
 
 const onGameOver = (gameInstance) => {
@@ -129,13 +145,10 @@ const onGameStarting = (gameInstance) => {
 
 const onMoving = (gameInstance, speedX) => {
   gameInstance.floor.updateCharacterSpeed(speedX)
+  gameInstance.clouds.map(c => c.updateCharacterSpeed(speedX))
 }
 
 const startGame = (gameInstance) => {
-  const isMobile = gameInstance.width < 1024
-  if (isMobile && document.documentElement.requestFullscreen) {
-    document.documentElement.requestFullscreen();
-  }
   document.querySelector('#game-start').classList.remove('active');
   gameInstance.restart()
 }
@@ -153,6 +166,9 @@ const onKeyDown = (gameInstance, e) => {
         document.querySelector('#game-over').classList.remove('active');
         restartGame(gameInstance)
       }
+      break;
+    case ' ':
+      gameInstance.helicopter.shoot()
       break;
     case 'ArrowUp':
       gameInstance.moveCharacter('up')
@@ -209,20 +225,24 @@ const handleMove = (gameInstance, e) => {
   }
 }
 
-const clouds = Clouds.generateClouds(window.innerWidth, window.innerHeight, 5)
-const helicopter = new Helicopter(10, Math.ceil(window.innerHeight / 2), window.innerWidth, window.innerHeight)
-const floor = new Floor()
+const gameWidth = window.innerWidth
+const gameHeight = window.innerHeight
 
-const game = new Game('game-center', window.innerWidth, window.innerHeight, clouds, helicopter, floor)
+const clouds = Clouds.generateClouds(gameWidth, gameHeight, 5)
+const helicopter = new Helicopter(10, Math.ceil(gameHeight / 2), gameWidth, gameHeight)
+const floor = new Floor()
+const mountain = new Mountain(gameWidth, gameHeight)
+
+const game = new Game('game-center', gameWidth, gameHeight, clouds, helicopter, floor, mountain)
 
 game.onReady = (gameInstance) => {
   gameInstance.onGameOver = () => onGameOver(gameInstance);
   gameInstance.onStarting = () => onGameStarting(gameInstance);
-  helicopter.onMoving = (speedX) => onMoving(gameInstance, speedX);
+  gameInstance.helicopter.onMoving = (speedX) => onMoving(gameInstance, speedX);
   document.querySelector('#btn-start').addEventListener('click', () => startGame(gameInstance));
   document.querySelector('#btn-restart').addEventListener('click', () => restartGame(gameInstance));
   window.addEventListener('keydown', (e) => onKeyDown(gameInstance, e));
-  window.addEventListener('resize', () => onWindowResize(gameInstance, window.innerWidth, window.innerHeight));
+  window.addEventListener('resize', () => onWindowResize(gameInstance, gameWidth, gameHeight));
   // add event to trigger when the user touch the #mobile-controls buttons
   const mobileControls = document.querySelector('#mobile-controls');
   mobileControls.addEventListener('touchstart', (e) => handleTouch(gameInstance, e));
@@ -232,11 +252,11 @@ game.onReady = (gameInstance) => {
 game.onDestruct = (gameInstance) => {
   gameInstance.onGameOver = () => {}
   gameInstance.onStarting = () => {}
-  helicopter.onMoving = () => {};
+  gameInstance.helicopter.onMoving = () => {};
   document.querySelector('#btn-start').removeEventListener('click', () => startGame(gameInstance));
   document.querySelector('#btn-restart').removeEventListener('click', () => restartGame(gameInstance));
   window.removeEventListener('keydown', (e) => onKeyDown(gameInstance, e));
-  window.removeEventListener('resize', () => onWindowResize(gameInstance, window.innerWidth, window.innerHeight));
+  window.removeEventListener('resize', () => onWindowResize(gameInstance, gameWidth, gameHeight));
   // remove event to trigger when the user touch the #mobile-controls buttons
   const mobileControls = document.querySelector('#mobile-controls');
   mobileControls.removeEventListener('touchstart', (e) => handleTouch(gameInstance, e));
