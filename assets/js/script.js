@@ -267,11 +267,11 @@ const profile = new Profile()
 
 const game = new Game('game-center', gameWidth, gameHeight, clouds, helicopter, floor, profile)
 
-setTimeout(() => {
-  document.querySelector('#game-start').classList.remove('active');
-  document.querySelector('#game-over').classList.remove('active');
-  restartGame(game)
-}, 200);
+// setTimeout(() => {
+//   document.querySelector('#game-start').classList.remove('active');
+//   document.querySelector('#game-over').classList.remove('active');
+//   restartGame(game)
+// }, 200);
 
 game.onReady = (gameInstance) => {
   gameInstance.onGameOver = () => onGameOver(gameInstance);
