@@ -1,5 +1,5 @@
 class Game {
-  constructor(canvasId, width, height, clouds, helicopter, floor, mountain) {
+  constructor(canvasId, width, height, clouds, helicopter, floor) {
     this.uuid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     this.canvas = document.getElementById(canvasId)
     this.width = width
@@ -8,7 +8,6 @@ class Game {
     this.clouds = clouds;
     this.helicopter = helicopter;
     this.floor = floor;
-    this.mountain = mountain;
     this.playing = false;
     this.gameOver = false;
     this.score = new Score(0)
@@ -73,8 +72,7 @@ class Game {
     const helicopter = new Helicopter(10, Math.ceil(this.height / 2), this.width, this.height)
     const floor = new Floor()
     const clouds = Clouds.generateClouds(this.width, this.height, 5)
-    const mountain = new Mountain(this.width, this.height)
-    const newGame = new Game('game-center', this.width, this.height, clouds, helicopter, floor, mountain)
+    const newGame = new Game('game-center', this.width, this.height, clouds, helicopter, floor)
     newGame.playing = true
     newGame.onGameOver = this.onGameOver
     newGame.onStarting = this.onStarting
@@ -231,9 +229,8 @@ const gameHeight = window.innerHeight
 const clouds = Clouds.generateClouds(gameWidth, gameHeight, 5)
 const helicopter = new Helicopter(10, Math.ceil(gameHeight / 2), gameWidth, gameHeight)
 const floor = new Floor()
-const mountain = new Mountain(gameWidth, gameHeight)
 
-const game = new Game('game-center', gameWidth, gameHeight, clouds, helicopter, floor, mountain)
+const game = new Game('game-center', gameWidth, gameHeight, clouds, helicopter, floor)
 
 game.onReady = (gameInstance) => {
   gameInstance.onGameOver = () => onGameOver(gameInstance);
