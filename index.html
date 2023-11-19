@@ -5,14 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helicopter game</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="manifest" href="manifest.json">
+    <script>
+      window.addEventListener('load', () => {
+        if ('serviceWorker' in navigator && window.innerWidth < 1100) {
+          alert('true');
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+          });
+          if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+            // O jogo está sendo executado como PWA
+            document.querySelector('#mobile-install').classList.remove('active');
+            document.getElementById('game-loading').classList.remove('active');
+          } else {
+            // O jogo não está sendo executado como PWA
+            document.querySelector('#mobile-install').classList.add('active');
+            document.getElementById('game-loading').classList.remove('active');
+          }
+        } else {
+          document.getElementById('game-loading').classList.remove('active');
+        }
+      });
+    </script>
   </head>
   <body>
     <main>
+      <div class="dialog dialog-master" id="mobile-install">
+        <div class="dialog-container">
+          <h1>Helicopter</h1>
+          <p>Por favor, você precisa instalar o jogo para jogá-lo.</p>
+        </div>
+      </div>
       <div class="dialog active" id="game-loading">
         <div class="dialog-container">
           <h1>Helicopter</h1>
@@ -54,10 +82,5 @@
     <script src="assets/js/score.js"></script>
     <script src="assets/js/profile.js"></script>
     <script src="assets/js/script.js"></script>
-    <script>
-      window.addEventListener('load', () => {
-        document.getElementById('game-loading').classList.remove('active');
-      });
-    </script>
   </body>
 </html>

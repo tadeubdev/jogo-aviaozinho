@@ -7,7 +7,7 @@ class Profile {
     this.life = 100
     this.maxLife = 100
     this.minLife = 0
-    this.decrementValue = 10
+    this.decrementValue = 20
   }
 
   draw(ctx) {
