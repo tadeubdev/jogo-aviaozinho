@@ -1,4 +1,6 @@
 {
+  "start_url": "/jogo-aviaozinho/",
+  "scope": "/jogo-aviaozinho/",
   "short_name": "Helicopter game",
   "name": "Joguinho do helicoptero",
   "icons": [
@@ -13,9 +15,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/",
-  "background_color": "#FFFFFF",
+  "background_color": "#333",
   "display": "standalone",
-  "scope": "/",
-  "theme_color": "#000000"
+  "theme_color": "#333"
 }

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Helicopter game</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -10,9 +10,8 @@
     <script>
       window.addEventListener('load', () => {
         if ('serviceWorker' in navigator && window.innerWidth < 1100) {
-          alert('true');
           window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+            navigator.serviceWorker.register('/jogo-aviaozinho/service-worker.js').then(function(registration) {
               console.log('ServiceWorker registration successful with scope: ', registration.scope);
             }, function(err) {
               console.log('ServiceWorker registration failed: ', err);
@@ -23,9 +22,28 @@
             document.querySelector('#mobile-install').classList.remove('active');
             document.getElementById('game-loading').classList.remove('active');
           } else {
+            var deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+              e.preventDefault();
+              deferredPrompt = e;
+              deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                  alert('Você aceitou a instalação do PWA');
+                } else {
+                  alert('Você não aceitou a instalação do PWA');
+                }
+                deferredPrompt = null;
+              });
+            });
+            window.addEventListener('appinstalled', (evt) => {
+              console.log('PWA foi instalado');
+            });
             // O jogo não está sendo executado como PWA
             document.querySelector('#mobile-install').classList.add('active');
             document.getElementById('game-loading').classList.remove('active');
+            document.querySelector('#mobile-install').addEventListener('click', () => {
+              deferredPrompt && deferredPrompt.prompt();
+            });
           }
         } else {
           document.getElementById('game-loading').classList.remove('active');
@@ -39,6 +57,7 @@
         <div class="dialog-container">
           <h1>Helicopter</h1>
           <p>Por favor, você precisa instalar o jogo para jogá-lo.</p>
+          <p>Clique aqui para instalar!</p>
         </div>
       </div>
       <div class="dialog active" id="game-loading">
